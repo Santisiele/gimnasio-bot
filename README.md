@@ -1,1 +1,1 @@
-Bot en TS para almacenar y brindar rutinas en un gimnasio
+Bot en TS para almacenar y brindar rutinas en un gimnasio usando Firebase
