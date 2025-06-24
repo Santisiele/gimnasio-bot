@@ -1,6 +1,9 @@
 import { Telegraf } from "telegraf";
 import { comandoBuscar } from "./commands/buscar";
 import { comandoCargar } from "./commands/cargar";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const BOT_TOKEN = process.env.TOKEN_BOT || "No esta aca";
 
