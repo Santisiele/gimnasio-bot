@@ -8,7 +8,7 @@ export function comandoCargar(bot: Telegraf) {
         if (!texto) return ctx.reply("Pegá los datos del alumno después de `/cargar`, separados por líneas.");
 
         const lineas = texto.split("\n").map(l => l.trim()).filter(Boolean);
-        const campos: any = {};
+        const campos: Record<string, string> = {};
         const rutinasTexto: string[] = [];
         let parsingRutinas = false;
 
@@ -22,23 +22,42 @@ export function comandoCargar(bot: Telegraf) {
             else {
                 const [clave, ...resto] = linea.split(":");
                 if (!clave || resto.length === 0) continue;
-                campos[clave.toLowerCase().trim()] = resto.join(":").trim();
+
+                const claveNormalizada = clave
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "") // Elimina tildes
+                    .trim();
+
+                campos[claveNormalizada] = resto.join(":").trim();
             }
         }
 
-        if (!campos["nombre"]) return ctx.reply("Falta el campo obligatorio: Nombre");
+        if (!campos["nombre"]) return ctx.reply("Falta el campo obligatorio: *Nombre*", { parse_mode: "Markdown" });
 
+        // Validar si hay campos mal escritos
+        const clavesValidas = [
+            "nombre", "comentarios", "atencion", "sugerencia", "nuevo nivel",
+            "motivo cambio", "ultima modificacion por", "profe encargado"
+        ];
+
+        const camposInvalidos = Object.keys(campos).filter(k => !clavesValidas.includes(k));
+
+        for (const invalido of camposInvalidos) ctx.reply(`⚠️ Campo no reconocido: *${invalido}*`, { parse_mode: "Markdown" });
+
+        const rutinas = parsearRutinas(rutinasTexto);
+        if (rutinas.length === 0) return ctx.reply("Debe haber al menos una rutina con ejercicios.");
 
         const alumno: Alumno = {
             nombre: campos["nombre"],
-            comentarios: campos["comentarios"],
-            atencion: campos["atencion"] ? parseInt(campos["atencion"]) : undefined,
-            sugerencia: campos["sugerencia"] === "true",
-            nuevoNivel: campos["nuevo nivel"],
-            motivoCambio: campos["motivo cambio"],
-            ultimaModificacionPor: campos["ultima modificacion por"],
-            profeEncargado: campos["profe encargado"],
-            rutinas: parsearRutinas(rutinasTexto)
+            comentarios: campos["comentarios"] || "",
+            atencion: campos["atencion"] || "",
+            sugerencia: campos["sugerencia"]?.toLowerCase() === "true",
+            nuevoNivel: campos["nuevo nivel"] || "",
+            motivoCambio: campos["motivo cambio"] || "",
+            ultimaModificacionPor: campos["ultima modificacion por"] || "",
+            profeEncargado: campos["profe encargado"] || "",
+            rutinas
         };
 
         await guardarAlumno(alumno);

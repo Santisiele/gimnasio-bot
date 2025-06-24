@@ -3,14 +3,16 @@ export interface Rutina {
   ejercicios: string[];
 }
 
+
+//firebase no acepta vacios
 export interface Alumno {
   nombre: string;
-  comentarios?: string;
+  comentarios: string;
   rutinas: Rutina[];
-  atencion?: number;
-  sugerencia?: boolean;
-  nuevoNivel?: string;
-  motivoCambio?: string;
-  ultimaModificacionPor?: string;
-  profeEncargado?: string;
+  atencion: string;
+  sugerencia: boolean;
+  nuevoNivel: string;
+  motivoCambio: string;
+  ultimaModificacionPor: string;
+  profeEncargado: string;
 }
