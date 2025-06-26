@@ -1,6 +1,5 @@
-import { db } from "../firebase";
-import { Alumno } from "../models/Alumno";
-import { Rutina } from "../models/Alumno";
+import { db } from "@/firebase";
+import { Alumno, Rutina } from "@/models/Alumno";
 
 const COLECCION = "alumnos";
 

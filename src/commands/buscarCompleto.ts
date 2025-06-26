@@ -1,7 +1,7 @@
 import { Telegraf } from "telegraf";
-import { buscarAlumnoCompleto } from "../services/AlumnoService";
-import { formatearNombreBuscado } from "../utils/formatearNombreBuscado";
-import { formatearAlumno } from "../utils/formatearAlumno";
+import { buscarAlumnoCompleto } from "@/services/AlumnoService";
+import { formatearNombreBuscado } from "@/utils/formatearNombreBuscado";
+import { formatearAlumno } from "@/utils/formatearAlumno";
 
 export function comandoBuscarCompleto(bot: Telegraf) {
   bot.command("buscar", async (ctx) => {

@@ -1,7 +1,7 @@
 import { Telegraf } from "telegraf";
-import { buscarDiaPorAlumno } from "../services/AlumnoService";
-import { formatearNombreBuscado } from "../utils/formatearNombreBuscado";
-import { formatearRutina } from "../utils/formatearRutina";
+import { buscarDiaPorAlumno } from "@/services/AlumnoService";
+import { formatearNombreBuscado } from "@/utils/formatearNombreBuscado";
+import { formatearRutina } from "@/utils/formatearRutina";
 
 export function comandoBuscarDia(bot: Telegraf) {
   bot.command("buscarDia", async (ctx) => {

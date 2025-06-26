@@ -1,6 +1,6 @@
 import { Telegraf } from "telegraf";
-import { guardarAlumnoCompleto } from "../services/AlumnoService";
-import { Alumno, Rutina } from "../models/Alumno";
+import { guardarAlumnoCompleto } from "@/services/AlumnoService";
+import { Alumno, Rutina } from "@/models/Alumno";
 
 export function comandoCargarCompleto(bot: Telegraf) {
     bot.command("cargar", async (ctx) => {

@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 import { Telegraf } from "telegraf";
-import { comandoBuscarCompleto } from "./commands/buscarCompleto";
-import { comandoCargarCompleto } from "./commands/cargarCompleto";
-import { comandoBuscarRutina } from "./commands/buscarRutina";
-import { comandoBuscarDia } from "./commands/buscarDia";
+import { comandoBuscarCompleto } from "@/commands/buscarCompleto";
+import { comandoCargarCompleto } from "@/commands/cargarCompleto";
+import { comandoBuscarRutina } from "@/commands/buscarRutina";
+import { comandoBuscarDia } from "@/commands/buscarDia";
 
 dotenv.config();
 

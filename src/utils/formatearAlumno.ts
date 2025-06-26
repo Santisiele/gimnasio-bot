@@ -1,5 +1,5 @@
-import { Alumno } from "../models/Alumno";
-import { formatearRutina } from "./formatearRutina";
+import { Alumno } from "@/models/Alumno";
+import { formatearRutina } from "@/utils/formatearRutina";
 
 export function formatearAlumno(alumno: Alumno): string {
   let respuesta = `📋 *Rutina de ${alumno.nombre ?? "Alumno sin nombre"}*\n`;

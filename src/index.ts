@@ -1,3 +1,3 @@
-import { iniciarBot } from "./bot";
+import { iniciarBot } from "@/bot";
 
 iniciarBot();
