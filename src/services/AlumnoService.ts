@@ -22,10 +22,12 @@ export async function buscarRutinaPorAlumno(nombre: string): Promise<Rutina[] | 
   return data?.rutinas ?? null;
 }
 
-export async function buscarDiaPorAlumno(nombre: string, dia: string): Promise<string | null> {
+export async function buscarDiaPorAlumno(nombre: string, dia: string): Promise<Rutina | null> {
   const doc = await db.collection(COLECCION).doc(nombre).get();
   if (!doc.exists) return null;
 
-  const data = doc.data();
-  return data?.rutinas.dia ?? null;
+  const data = doc.data() as Alumno;
+  const rutinaDelDia = data.rutinas.find(r => r.dia.toLowerCase() === dia.toLowerCase());
+
+  return rutinaDelDia ?? null;
 }

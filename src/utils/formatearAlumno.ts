@@ -8,6 +8,7 @@ export function formatearAlumno(alumno: Alumno): string {
 
   respuesta += formatearRutina(alumno.rutinas) + "\n";
 
+  respuesta+= "\n";
   respuesta += `🧠 *Atención:* ${alumno.atencion}/10\n`;
   respuesta += `💡 *Sugerencia:* ${alumno.sugerencia ? "Sí" : "No"}\n`;
   respuesta += `📈 *Nuevo Nivel:* ${alumno.nuevoNivel}\n`;

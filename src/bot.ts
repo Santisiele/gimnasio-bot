@@ -3,6 +3,7 @@ import { Telegraf } from "telegraf";
 import { comandoBuscarCompleto } from "./commands/buscarCompleto";
 import { comandoCargarCompleto } from "./commands/cargarCompleto";
 import { comandoBuscarRutina } from "./commands/buscarRutina";
+import { comandoBuscarDia } from "./commands/buscarDia";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ bot.start((ctx) => {
 comandoBuscarCompleto(bot);
 comandoCargarCompleto(bot);
 comandoBuscarRutina(bot);
+comandoBuscarDia(bot);
 
 export async function iniciarBot() {
   console.log("Bot corriendo...");
