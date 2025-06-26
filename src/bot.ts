@@ -1,7 +1,8 @@
-import { Telegraf } from "telegraf";
-import { comandoBuscar } from "./commands/buscar";
-import { comandoCargar } from "./commands/cargar";
 import * as dotenv from "dotenv";
+import { Telegraf } from "telegraf";
+import { comandoBuscarCompleto } from "./commands/buscarCompleto";
+import { comandoCargarCompleto } from "./commands/cargarCompleto";
+import { comandoBuscarRutina } from "./commands/buscarRutina";
 
 dotenv.config();
 
@@ -13,8 +14,9 @@ bot.start((ctx) => {
   ctx.reply("¡Hola! Escribí /buscar seguido del nombre del alumno para ver su rutina.");
 });
 
-comandoBuscar(bot);
-comandoCargar(bot);
+comandoBuscarCompleto(bot);
+comandoCargarCompleto(bot);
+comandoBuscarRutina(bot);
 
 export async function iniciarBot() {
   console.log("Bot corriendo...");

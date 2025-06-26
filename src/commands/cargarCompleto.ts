@@ -1,8 +1,8 @@
 import { Telegraf } from "telegraf";
-import { guardarAlumno } from "../services/AlumnoService";
+import { guardarAlumnoCompleto } from "../services/AlumnoService";
 import { Alumno, Rutina } from "../models/Alumno";
 
-export function comandoCargar(bot: Telegraf) {
+export function comandoCargarCompleto(bot: Telegraf) {
     bot.command("cargar", async (ctx) => {
         const texto = ctx.message.text.replace("/cargar", "").trim();
         if (!texto) return ctx.reply("Pegá los datos del alumno después de `/cargar`, separados por líneas.");
@@ -60,7 +60,7 @@ export function comandoCargar(bot: Telegraf) {
             rutinas
         };
 
-        await guardarAlumno(alumno);
+        await guardarAlumnoCompleto(alumno);
         ctx.reply(`✅ Alumno *${alumno.nombre}* cargado correctamente.`, { parse_mode: "Markdown" });
     });
 }
