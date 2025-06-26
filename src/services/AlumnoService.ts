@@ -22,3 +22,10 @@ export async function buscarRutinaPorAlumno(nombre: string): Promise<Rutina[] | 
   return data?.rutinas ?? null;
 }
 
+export async function buscarDiaPorAlumno(nombre: string, dia: string): Promise<string | null> {
+  const doc = await db.collection(COLECCION).doc(nombre).get();
+  if (!doc.exists) return null;
+
+  const data = doc.data();
+  return data?.rutinas.dia ?? null;
+}

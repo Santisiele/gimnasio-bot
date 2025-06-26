@@ -1,13 +1,11 @@
 import { Telegraf } from "telegraf";
 import { buscarRutinaPorAlumno } from "../services/AlumnoService";
+import { formatearNombreBuscado } from "../utils/formatearNombreBuscado";
 import { formatearRutina } from "../utils/formatearRutina";
 
 export function comandoBuscarRutina(bot: Telegraf) {
   bot.command("rutina", async (ctx) => {
-    const texto = ctx.message.text;
-    const partes = texto.split(" ");
-    partes.shift();
-    const nombreBuscado = partes.join(" ");
+    let nombreBuscado = formatearNombreBuscado(ctx);
 
     if (!nombreBuscado) return ctx.reply("Por favor, escribí un nombre. Ej: /buscar Juan Pérez");
 
