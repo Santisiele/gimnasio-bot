@@ -9,11 +9,11 @@ export function comandoBuscarRutina(bot: Telegraf) {
 
     if (!nombreBuscado) return ctx.reply("Por favor, escribí un nombre. Ej: /buscar Juan Pérez");
 
-    const rutina = await buscarRutinaPorAlumno(nombreBuscado);
+    const resultado = await buscarRutinaPorAlumno(nombreBuscado);
 
-    if (!rutina) return ctx.reply(`No encontré a "${nombreBuscado}" en la base.`);
+    if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
 
-    const respuesta = parsearRutina(rutina);
+    const respuesta = parsearRutina(resultado.data);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

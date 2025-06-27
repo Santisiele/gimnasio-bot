@@ -17,11 +17,11 @@ export function comandoBuscarDia(bot: Telegraf) {
     const nombreBuscado = parsearNombreBuscado(ctx, partes.slice(0, -1));
     const diaTexto = `Día ${numeroDia}`;
 
-    const rutina = await buscarDiaPorAlumno(nombreBuscado, diaTexto);
+    const resultado = await buscarDiaPorAlumno(nombreBuscado, diaTexto);
 
-    if (!rutina) return ctx.reply(`No encontré la rutina del ${diaTexto} para ${nombreBuscado}.`);
+    if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
 
-    const respuesta = parsearRutina([rutina]);
+    const respuesta = parsearRutina([resultado.data]);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

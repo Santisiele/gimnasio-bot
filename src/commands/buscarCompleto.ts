@@ -9,11 +9,11 @@ export function comandoBuscarCompleto(bot: Telegraf) {
 
     if (!nombreBuscado) return ctx.reply("Por favor, escribí un nombre. Ej: /buscar Juan Pérez");
 
-    const alumno = await buscarAlumnoCompleto(nombreBuscado);
+    const resultado = await buscarAlumnoCompleto(nombreBuscado);
 
-    if (!alumno) return ctx.reply(`No encontré a "${nombreBuscado}" en la base.`);
+    if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
 
-    const respuesta = parsearAlumno(alumno);
+    const respuesta = parsearAlumno(resultado.data);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

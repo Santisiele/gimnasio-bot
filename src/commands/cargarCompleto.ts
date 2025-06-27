@@ -60,7 +60,9 @@ export function comandoCargarCompleto(bot: Telegraf) {
             rutinas
         };
 
-        await cargarAlumnoCompleto(alumno);
+        const resultado = await cargarAlumnoCompleto(alumno);
+
+        if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
         ctx.reply(`✅ Alumno *${alumno.nombre}* cargado correctamente.`, { parse_mode: "Markdown" });
     });
 }
