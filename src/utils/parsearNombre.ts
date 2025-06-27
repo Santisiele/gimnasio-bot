@@ -7,7 +7,7 @@ function capitalizarPalabras(texto: string): string {
     .join(" ");
 }
 
-export function parsearNombreBuscado(ctx: Context, overrideParts?: string[]): string {
+export function parsearNombre(ctx: Context, overrideParts?: string[]): string {
   const partes = overrideParts ?? (
     (ctx.message && "text" in ctx.message)
       ? (ctx.message.text as string).split(" ").slice(1)

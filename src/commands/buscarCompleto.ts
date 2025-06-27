@@ -1,19 +1,23 @@
 import { Telegraf } from "telegraf";
 import { buscarAlumnoCompleto } from "@/services/AlumnoService";
-import { parsearNombreBuscado } from "@/utils/parsearNombreBuscado";
+import { parsearNombre } from "@/utils/parsearNombre";
 import { parsearAlumno } from "@/utils/parsearAlumno";
+import { manejarResultado } from "@/utils/manejadores";
 
 export function comandoBuscarCompleto(bot: Telegraf) {
   bot.command("buscar", async (ctx) => {
-    let nombreBuscado = parsearNombreBuscado(ctx);
+    const nombreBuscado = parsearNombre(ctx);
 
     if (!nombreBuscado) return ctx.reply("Por favor, escribí un nombre. Ej: /buscar Juan Pérez");
 
     const resultado = await buscarAlumnoCompleto(nombreBuscado);
+    const alumno = await manejarResultado(ctx, resultado, {
+      mensajeError: `No se pudo obtener al alumno *${nombreBuscado}*`,
+    });
+    
+    if (!alumno) return;
 
-    if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
-
-    const respuesta = parsearAlumno(resultado.data);
+    const respuesta = parsearAlumno(alumno);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

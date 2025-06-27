@@ -1,7 +1,8 @@
 import { Telegraf } from "telegraf";
 import { buscarDiaPorAlumno } from "@/services/AlumnoService";
-import { parsearNombreBuscado } from "@/utils/parsearNombreBuscado";
+import { parsearNombre } from "@/utils/parsearNombre";
 import { parsearRutina } from "@/utils/parsearRutina";
+import { manejarResultado } from "@/utils/manejadores";
 
 export function comandoBuscarDia(bot: Telegraf) {
   bot.command("buscarDia", async (ctx) => {
@@ -14,14 +15,17 @@ export function comandoBuscarDia(bot: Telegraf) {
     const numeroDia = parseInt(partes[partes.length - 1], 10);
     if (isNaN(numeroDia)) return ctx.reply("El último valor debe ser un número. Ej: /buscarDia Juan Pérez 2");
 
-    const nombreBuscado = parsearNombreBuscado(ctx, partes.slice(0, -1));
+    const nombreBuscado = parsearNombre(ctx, partes.slice(0, -1));
     const diaTexto = `Día ${numeroDia}`;
 
     const resultado = await buscarDiaPorAlumno(nombreBuscado, diaTexto);
+    const rutina = await manejarResultado(ctx, resultado, {
+      mensajeError: `No se pudo obtener la rutina del *${diaTexto}* para *${nombreBuscado}*`,
+    });
+    
+    if (!rutina) return;
 
-    if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
-
-    const respuesta = parsearRutina([resultado.data]);
+    const respuesta = parsearRutina([rutina]);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

@@ -1,6 +1,8 @@
 import { Telegraf } from "telegraf";
 import { cargarAlumnoCompleto } from "@/services/AlumnoService";
 import { Alumno, Rutina } from "@/models/Alumno";
+import { manejarResultadoSimple } from "@/utils/manejadores";
+import { parsearNombre } from "@/utils/parsearNombre";
 
 export function comandoCargarCompleto(bot: Telegraf) {
     bot.command("cargar", async (ctx) => {
@@ -45,11 +47,11 @@ export function comandoCargarCompleto(bot: Telegraf) {
 
         for (const invalido of camposInvalidos) ctx.reply(`⚠️ Campo no reconocido: *${invalido}*`, { parse_mode: "Markdown" });
 
-        const rutinas = parsearRutinas(rutinasTexto);
+        const rutinas = convertirTextoARutinas(rutinasTexto);
         if (rutinas.length === 0) return ctx.reply("Debe haber al menos una rutina con ejercicios.");
 
         const alumno: Alumno = {
-            nombre: campos["nombre"],
+            nombre: parsearNombre(ctx, [campos["nombre"]]),
             comentarios: campos["comentarios"] || "",
             atencion: campos["atencion"] || "",
             sugerencia: campos["sugerencia"]?.toLowerCase() === "true",
@@ -60,14 +62,19 @@ export function comandoCargarCompleto(bot: Telegraf) {
             rutinas
         };
 
-        const resultado = await cargarAlumnoCompleto(alumno);
+        const ok = await manejarResultadoSimple(
+            ctx,
+            await cargarAlumnoCompleto(alumno),
+            `No se pudo guardar al alumno *${alumno.nombre}*`
+        );
 
-        if (!resultado.ok) return ctx.reply(`❌ Error: ${resultado.error}`, { parse_mode: "Markdown" });
+        if (!ok) return;
+
         ctx.reply(`✅ Alumno *${alumno.nombre}* cargado correctamente.`, { parse_mode: "Markdown" });
     });
 }
 
-function parsearRutinas(rutinasTexto: string[]): Rutina[] {
+function convertirTextoARutinas(rutinasTexto: string[]): Rutina[] {
     const rutinas: Rutina[] = [];
     let rutinaActual: Rutina | null = null;
 
