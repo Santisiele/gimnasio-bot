@@ -1,11 +1,11 @@
 import { Telegraf } from "telegraf";
 import { buscarRutinaPorAlumno } from "@/services/AlumnoService";
-import { formatearNombreBuscado } from "@/utils/formatearNombreBuscado";
-import { formatearRutina } from "@/utils/formatearRutina";
+import { parsearNombreBuscado } from "@/utils/parsearNombreBuscado";
+import { parsearRutina } from "@/utils/parsearRutina";
 
 export function comandoBuscarRutina(bot: Telegraf) {
   bot.command("rutina", async (ctx) => {
-    let nombreBuscado = formatearNombreBuscado(ctx);
+    let nombreBuscado = parsearNombreBuscado(ctx);
 
     if (!nombreBuscado) return ctx.reply("Por favor, escribí un nombre. Ej: /buscar Juan Pérez");
 
@@ -13,7 +13,7 @@ export function comandoBuscarRutina(bot: Telegraf) {
 
     if (!rutina) return ctx.reply(`No encontré a "${nombreBuscado}" en la base.`);
 
-    const respuesta = formatearRutina(rutina);
+    const respuesta = parsearRutina(rutina);
     ctx.reply(respuesta, { parse_mode: "Markdown" });
   });
 }

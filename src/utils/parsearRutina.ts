@@ -1,6 +1,6 @@
 import { Rutina } from "@/models/Alumno";
 
-export function formatearRutina(rutinas: Rutina[] | undefined): string {
+export function parsearRutina(rutinas: Rutina[] | undefined): string {
   if (!rutinas || rutinas.length === 0) return "_No hay rutinas cargadas._";
 
   let respuesta = "📋 *Rutina cargada:*\n\n";

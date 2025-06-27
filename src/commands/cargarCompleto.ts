@@ -1,5 +1,5 @@
 import { Telegraf } from "telegraf";
-import { guardarAlumnoCompleto } from "@/services/AlumnoService";
+import { cargarAlumnoCompleto } from "@/services/AlumnoService";
 import { Alumno, Rutina } from "@/models/Alumno";
 
 export function comandoCargarCompleto(bot: Telegraf) {
@@ -26,7 +26,7 @@ export function comandoCargarCompleto(bot: Telegraf) {
                 const claveNormalizada = clave
                     .toLowerCase()
                     .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "") // Elimina tildes
+                    .replace(/[\u0300-\u036f]/g, "") // sin tildes
                     .trim();
 
                 campos[claveNormalizada] = resto.join(":").trim();
@@ -35,7 +35,7 @@ export function comandoCargarCompleto(bot: Telegraf) {
 
         if (!campos["nombre"]) return ctx.reply("Falta el campo obligatorio: *Nombre*", { parse_mode: "Markdown" });
 
-        // Validar si hay campos mal escritos
+        // mal escritos
         const clavesValidas = [
             "nombre", "comentarios", "atencion", "sugerencia", "nuevo nivel",
             "motivo cambio", "ultima modificacion por", "profe encargado"
@@ -60,7 +60,7 @@ export function comandoCargarCompleto(bot: Telegraf) {
             rutinas
         };
 
-        await guardarAlumnoCompleto(alumno);
+        await cargarAlumnoCompleto(alumno);
         ctx.reply(`✅ Alumno *${alumno.nombre}* cargado correctamente.`, { parse_mode: "Markdown" });
     });
 }
@@ -70,10 +70,17 @@ function parsearRutinas(rutinasTexto: string[]): Rutina[] {
     let rutinaActual: Rutina | null = null;
 
     for (const linea of rutinasTexto) {
-        if (/^día\s+\d+/i.test(linea)) {
+        const lineaNormalizada = linea
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+
+        if (/^dia\s+\d+/.test(lineaNormalizada)) {
             if (rutinaActual) rutinas.push(rutinaActual);
-            rutinaActual = { dia: linea, ejercicios: [] };
-        } else if (rutinaActual) rutinaActual.ejercicios.push(linea);
+            rutinaActual = { dia: linea.trim(), ejercicios: [] };
+        } else if (rutinaActual) {
+            rutinaActual.ejercicios.push(linea);
+        }
     }
 
     if (rutinaActual) rutinas.push(rutinaActual);

@@ -3,8 +3,15 @@ import { Alumno, Rutina } from "@/models/Alumno";
 
 const COLECCION = "alumnos";
 
-export async function guardarAlumnoCompleto(alumno: Alumno) {
+export async function cargarAlumnoCompleto(alumno: Alumno) {
   await db.collection(COLECCION).doc(alumno.nombre).set(alumno);
+}
+
+export async function cargarRutinas(nombreAlumno: string, rutinas: Rutina[]) {
+  await db.collection(COLECCION).doc(nombreAlumno).set(
+    { rutinas: rutinas },
+    { merge: true }
+  );
 }
 
 export async function buscarAlumnoCompleto(nombre: string): Promise<Alumno | null> {
