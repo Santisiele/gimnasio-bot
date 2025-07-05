@@ -5,6 +5,7 @@ import { comandoCargarCompleto } from "@/commands/cargarCompleto";
 import { comandoBuscarRutina } from "@/commands/buscarRutina";
 import { comandoBuscarDia } from "@/commands/buscarDia";
 import { comandoImportarDesdeSheet } from "@/commands/importarCompleto";
+import { comandoBorrar } from "./commands/borrar";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ comandoCargarCompleto(bot);
 comandoBuscarRutina(bot);
 comandoBuscarDia(bot);
 comandoImportarDesdeSheet(bot);
+comandoBorrar(bot);
 
 export async function iniciarBot() {
   console.log("Bot corriendo...");

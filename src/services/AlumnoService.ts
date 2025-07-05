@@ -67,3 +67,15 @@ export async function buscarDiaPorAlumno(nombre: string, dia: string): Promise<R
     return { ok: false, error: error.message || "Error al buscar la rutina del día" };
   }
 }
+
+export async function borrarAlumno(nombre: string): Promise<Resultado<void>> {
+  try {
+    const doc = await db.collection(COLECCION).doc(nombre).get();
+    if (!doc.exists) return { ok: false, error: "El alumno no existe" };
+
+    await doc.ref.delete();
+    return { ok: true, data: undefined };
+  } catch (error: any) {
+    return { ok: false, error: error.message || "Error al borrar el alumno" };
+  }
+}
