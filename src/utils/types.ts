@@ -1,4 +1,4 @@
-import { Context } from "telegraf";
+import { Rutina } from "@/models/Alumno";
 
 export type Resultado<T> = {
     ok: true;
@@ -6,4 +6,10 @@ export type Resultado<T> = {
 } | {
     ok: false;
     error: string;
+};
+
+export type RutinaConComentariosAtencion = {
+  rutinas: Rutina[];
+  comentarios: string;
+  atencion: string;
 };

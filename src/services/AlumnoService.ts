@@ -1,6 +1,7 @@
 import { db } from "@/firebase";
 import { Alumno, Rutina } from "@/models/Alumno";
 import { Resultado } from "@/utils/types";
+import { RutinaConComentariosAtencion } from "@/utils/types";
 
 const COLECCION = "alumnos";
 
@@ -33,16 +34,19 @@ export async function buscarAlumnoCompleto(nombre: string): Promise<Resultado<Al
   }
 }
 
-export async function buscarRutinaPorAlumno(nombre: string): Promise<Resultado<Rutina[]>> {
+export async function buscarRutinaPorAlumno(nombre: string): Promise<Resultado<RutinaConComentariosAtencion>> {
   try {
     const doc = await db.collection(COLECCION).doc(nombre).get();
     if (!doc.exists) return { ok: false, error: "El alumno no existe" };
 
     const data = doc.data();
     const rutinas = data?.rutinas;
+    const comentarios = data?.comentarios ?? "";
+    const atencion = data?.comentarios ?? "";
+
     if (!rutinas) return { ok: false, error: "El alumno no tiene rutinas asignadas" };
 
-    return { ok: true, data: rutinas };
+    return { ok: true, data: { rutinas, comentarios, atencion } };
   } catch (error: any) {
     return { ok: false, error: error.message || "Error al buscar las rutinas" };
   }
