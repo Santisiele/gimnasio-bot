@@ -14,14 +14,31 @@ export async function cargarAlumnoCompleto(alumno: Alumno): Promise<Resultado<vo
   }
 }
 
-export async function cargarRutinas(nombreAlumno: string, rutinas: Rutina[]): Promise<Resultado<void>> {
+export async function actualizarAlumnoParcial(
+  nombre: string,
+  datos: Partial<Alumno>
+): Promise<Resultado<void>> {
   try {
-    await db.collection(COLECCION).doc(nombreAlumno).set({ rutinas }, { merge: true });
+    const ref = db.collection(COLECCION).doc(nombre);
+    const doc = await ref.get();
+
+    if (!doc.exists) return { ok: false, error: `El alumno "${nombre}" no existe` };
+
+    const datosFiltrados = Object.entries(datos).reduce((acc, [key, value]) => {
+      if (value !== undefined && value !== "") {
+        acc[key as keyof Alumno] = value as any;
+      }
+      return acc;
+    }, {} as Partial<Alumno>);
+
+    await ref.set(datosFiltrados, { merge: true });
+
     return { ok: true, data: undefined };
   } catch (error: any) {
-    return { ok: false, error: error.message || "Error al guardar las rutinas" };
+    return { ok: false, error: error.message || "Error al actualizar el alumno" };
   }
 }
+
 
 export async function buscarAlumnoCompleto(nombre: string): Promise<Resultado<Alumno>> {
   try {
