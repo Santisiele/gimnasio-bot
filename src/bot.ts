@@ -16,7 +16,7 @@ const BOT_TOKEN = process.env.TOKEN_BOT || "No esta aca";
 const bot = new Telegraf(BOT_TOKEN);
 
 bot.start((ctx) => {
-  ctx.reply("¡Hola! Escribí /buscar seguido del nombre del alumno para ver su rutina.");
+  ctx.reply("¡Hola! Escribí /ayuda para ver los comandos disponibles.");
 });
 
 comandoBuscarCompleto(bot);
