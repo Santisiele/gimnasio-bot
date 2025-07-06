@@ -1,10 +1,18 @@
 import * as admin from "firebase-admin";
-import * as path from "path";
+import * as dotenv from "dotenv";
 
-const serviceAccount = require(path.resolve(__dirname, "../serviceAccountKey.json"));
+dotenv.config();
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+if (!admin.apps.length) {
+  const credenciales = process.env.FIREBASE_CREDENCIALES || "No";
+
+  if (credenciales === "No") throw new Error("FIREBASE_CREDENCIALES no está definida en el entorno.");
+
+  const serviceAccount = JSON.parse(credenciales);
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 export const db = admin.firestore();

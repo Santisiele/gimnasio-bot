@@ -1,8 +1,16 @@
-import { google } from 'googleapis';
-import { JWT } from 'google-auth-library';
-import * as credentials from '@/../serviceGoogleKey.json';
+import { google } from "googleapis";
+import { JWT } from "google-auth-library";
+import * as dotenv from "dotenv";
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+dotenv.config();
+
+const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
+
+const rawCredentials = process.env.SHEET_CREDENCIALES || "No";
+
+if (rawCredentials === "No") throw new Error("SHEET_CREDENCIALES no está definida en el entorno");
+
+const credentials = JSON.parse(rawCredentials);
 
 const auth = new google.auth.JWT({
   email: credentials.client_email,
@@ -10,8 +18,7 @@ const auth = new google.auth.JWT({
   scopes: SCOPES,
 });
 
-const sheets = google.sheets({ version: 'v4', auth });
-
+const sheets = google.sheets({ version: "v4", auth });
 
 export const getSheetData = async (spreadsheetId: string, range: string) => {
   try {
@@ -22,7 +29,7 @@ export const getSheetData = async (spreadsheetId: string, range: string) => {
 
     return response.data.values || [];
   } catch (error) {
-    console.error('Error leyendo Google Sheet:', error);
+    console.error("Error leyendo Google Sheet:", error);
     return [];
   }
 };
