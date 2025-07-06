@@ -4,9 +4,10 @@ import { comandoBuscarCompleto } from "@/commands/buscarCompleto";
 import { comandoCargarCompleto } from "@/commands/cargarCompleto";
 import { comandoBuscarRutina } from "@/commands/buscarRutina";
 import { comandoBuscarDia } from "@/commands/buscarDia";
-import { comandoImportarDesdeSheet } from "@/commands/importarCompleto";
+import { comandoImportarDesdeSheet } from "@/commands/importar";
 import { comandoBorrar } from "@/commands/borrar";
 import { comandoActualizar } from "@/commands/actualizar";
+import { comandoAyuda } from "./commands/ayuda";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ comandoBuscarDia(bot);
 comandoImportarDesdeSheet(bot);
 comandoBorrar(bot);
 comandoActualizar(bot);
+comandoAyuda(bot);
 
 export async function iniciarBot() {
   console.log("Bot corriendo...");
