@@ -29,7 +29,6 @@ export const getSheetData = async (spreadsheetId: string, range: string) => {
 
     return response.data.values || [];
   } catch (error) {
-    console.error("Error leyendo Google Sheet:", error);
     return [];
   }
 };

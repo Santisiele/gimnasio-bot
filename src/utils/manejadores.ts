@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import { Resultado } from "@/utils/types";
 
-export async function manejarResultado<T>(// para las lecturas
+export async function manejarResultado<T>(
     ctx: Context,
     resultado: Resultado<T>,
     opciones?: { mensajeError?: string }
@@ -21,7 +21,7 @@ export async function manejarResultado<T>(// para las lecturas
     return resultado.data;
 }
 
-export async function manejarResultadoSimple(// para las cargas
+export async function manejarResultadoSimple(
   ctx: Context,
   resultado: Resultado<void>,
   mensajeError?: string

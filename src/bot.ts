@@ -5,8 +5,8 @@ import { comandoCargarCompleto } from "@/commands/cargarCompleto";
 import { comandoBuscarRutina } from "@/commands/buscarRutina";
 import { comandoBuscarDia } from "@/commands/buscarDia";
 import { comandoImportarDesdeSheet } from "@/commands/importarCompleto";
-import { comandoBorrar } from "./commands/borrar";
-import { comandoActualizar } from "./commands/actualizar";
+import { comandoBorrar } from "@/commands/borrar";
+import { comandoActualizar } from "@/commands/actualizar";
 
 dotenv.config();
 
