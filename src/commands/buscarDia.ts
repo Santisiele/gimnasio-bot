@@ -16,7 +16,7 @@ export function comandoBuscarDia(bot: Telegraf) {
     if (isNaN(numeroDia)) return ctx.reply("El último valor debe ser un número. Ej: /buscarDia Juan Pérez 2");
 
     const nombreBuscado = parsearNombre(ctx, partes.slice(0, -1));
-    const diaTexto = `Día ${numeroDia}`;
+    const diaTexto = `Dia ${numeroDia}`;
 
     const resultado = await buscarDiaPorAlumno(nombreBuscado, diaTexto);
     const rutina = await manejarResultado(ctx, resultado, {

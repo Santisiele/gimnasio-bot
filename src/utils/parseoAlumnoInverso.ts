@@ -71,7 +71,9 @@ function convertirTextoARutinas(rutinasTexto: string[]): Rutina[] {
 
     if (/^dia\s+.+/.test(lineaNormalizada)) {
       if (rutinaActual) rutinas.push(rutinaActual);
-      rutinaActual = { dia: linea.trim(), ejercicios: [] };
+
+      const numero = linea.match(/\d+/)?.[0] || "1";
+      rutinaActual = { dia: `Dia ${numero}`, ejercicios: [] };
     } else if (rutinaActual) {
       rutinaActual.ejercicios.push(linea);
     }
