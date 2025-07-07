@@ -7,7 +7,8 @@ import { comandoBuscarDia } from "@/commands/buscarDia";
 import { comandoImportarDesdeSheet } from "@/commands/importar";
 import { comandoBorrar } from "@/commands/borrar";
 import { comandoActualizar } from "@/commands/actualizar";
-import { comandoAyuda } from "./commands/ayuda";
+import { comandoAyuda } from "@/commands/ayuda";
+import { comandoUsos } from "@/commands/usos";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ comandoImportarDesdeSheet(bot);
 comandoBorrar(bot);
 comandoActualizar(bot);
 comandoAyuda(bot);
+comandoUsos(bot);
 
 export async function iniciarBot() {
   console.log("Bot corriendo...");
