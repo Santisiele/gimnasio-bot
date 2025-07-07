@@ -20,13 +20,13 @@ bot.start((ctx) => {
   ctx.reply("¡Hola! Escribí /ayuda para ver los comandos disponibles.");
 });
 
-comandoBuscarCompleto(bot);
-comandoCargarCompleto(bot);
-comandoBuscarRutina(bot);
-comandoBuscarDia(bot);
-comandoImportarDesdeSheet(bot);
-comandoBorrar(bot);
-comandoActualizar(bot);
+// comandoBuscarCompleto(bot);
+// comandoCargarCompleto(bot);
+// comandoBuscarRutina(bot);
+// comandoBuscarDia(bot);
+// comandoImportarDesdeSheet(bot);
+// comandoBorrar(bot);
+// comandoActualizar(bot);
 comandoAyuda(bot);
 comandoUsos(bot);
 
