@@ -1,0 +1,19 @@
+name: Start Bot
+
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Railway CLI
+        run: npm install -g railway
+
+      - name: Encender el bot (railway up)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up
