@@ -1,31 +1,45 @@
+import { fork } from "child_process";
+import path from "path";
 import { Telegraf } from "telegraf";
-import * as dotenv from "dotenv";
-
-dotenv.config();
+import { MensajeImportador } from "@/utils/types";
 
 export function comandoImportarDesdeSheet(bot: Telegraf) {
   bot.command("importar", async (ctx) => {
-    await ctx.reply("📥 Importando datos desde Google Sheets...");
+    await ctx.reply("🚀 Iniciando importación...");
 
-    const { getSheetData } = await import("@/services/GoogleSheetsService");
-    const spreadsheetId = process.env.SPREADSHEET_ID!;
-    const range = "Alumnos!A2:I";
+    const child = fork(path.resolve(__dirname, "../utils/importador.ts"));
 
-    const todasLasFilas = await getSheetData(spreadsheetId, range);
+    let total = 0;
+    let finalizado = false;
+    let yaRespondido = false;
+    let pendientes = 0;
 
-    const filas: string[][] = [];
-    for (const row of todasLasFilas) {
-      const nombre = row[0]?.toString().trim();
-      if (!nombre) break;
-      filas.push(row);
-    }
+    const responderSiFinalizo = async () => {
+      if (finalizado && pendientes === 0 && !yaRespondido) {
+        yaRespondido = true;
+        await ctx.reply(`✅ Importación finalizada. Se procesaron ${total} alumnos.`);
+      }
+    };
 
-    let importados = 0;
+    child.on("message", async (msg: MensajeImportador) => {
+      if (msg.type !== "fila") return;
 
-    for (const row of filas) {
-      const [nombre, atencion, sugerencia, nuevoNivel, motivoCambio, ultimaModPor, profeEncargado, comentarios, rutina] = row;
+      total++;
+      pendientes++;
 
-      const rutinaFormateada = (rutina as string)
+      const {
+        nombre,
+        atencion,
+        sugerencia,
+        nuevoNivel,
+        motivoCambio,
+        ultimaModPor,
+        profeEncargado,
+        comentarios,
+        rutina,
+      } = msg.payload;
+
+      const rutinaFormateada = rutina
         .split("\n")
         .map((linea) => linea.trim())
         .filter(Boolean);
@@ -34,7 +48,7 @@ export function comandoImportarDesdeSheet(bot: Telegraf) {
         "/cargar",
         `Nombre: ${nombre}`,
         `Atencion: ${atencion}`,
-        `Sugerencia: ${String(sugerencia).toLowerCase() === "si"}`,
+        `Sugerencia: ${sugerencia.toLowerCase() === "si"}`,
         `Nuevo Nivel: ${nuevoNivel}`,
         `Motivo Cambio: ${motivoCambio}`,
         `Ultima Modificacion Por: ${ultimaModPor}`,
@@ -53,14 +67,20 @@ export function comandoImportarDesdeSheet(bot: Telegraf) {
         entities: [{ offset: 0, length: 7, type: "bot_command" }],
       };
 
-      await bot.handleUpdate({
-        update_id: Date.now(),
-        message: fakeMessage,
-      } as any);
+      try {
+        await bot.handleUpdate({
+          update_id: Date.now(),
+          message: fakeMessage,
+        } as any);
+      } finally {
+        pendientes--;
+        await responderSiFinalizo();
+      }
+    });
 
-      importados++;
-    }
-
-    await ctx.reply(`✅ Importación finalizada. Se procesaron ${importados} alumnos.`);
+    child.on("exit", async () => {
+      finalizado = true;
+      await responderSiFinalizo();
+    });
   });
 }

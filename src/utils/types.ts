@@ -13,3 +13,18 @@ export type RutinaConComentariosAtencion = {
   comentarios: string;
   atencion: string;
 };
+
+export type MensajeImportador = {
+  type: "fila";
+  payload: {
+    nombre: string;
+    atencion: string;
+    sugerencia: string;
+    nuevoNivel: string;
+    motivoCambio: string;
+    ultimaModPor: string;
+    profeEncargado: string;
+    comentarios: string;
+    rutina: string;
+  };
+};

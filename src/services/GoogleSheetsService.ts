@@ -6,11 +6,15 @@ dotenv.config();
 
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 
-export const getSheetData = async (spreadsheetId: string, range: string) => {
-  const rawCredentials = process.env.SHEET_CREDENCIALES;
-  if (!rawCredentials) throw new Error("Falta SHEET_CREDENCIALES");
+let sheets: ReturnType<typeof google.sheets> | null = null;
 
-  const credentials = JSON.parse(rawCredentials);
+function initSheetsClient() {
+  if (sheets) return sheets;
+
+  const credencialCruda = process.env.SHEET_CREDENCIALES;
+  if (!credencialCruda) throw new Error("Falta SHEET_CREDENCIALES");
+
+  const credentials = JSON.parse(credencialCruda);
 
   const auth = new google.auth.JWT({
     email: credentials.client_email,
@@ -18,16 +22,20 @@ export const getSheetData = async (spreadsheetId: string, range: string) => {
     scopes: SCOPES,
   });
 
-  const sheets = google.sheets({ version: "v4", auth });
+  sheets = google.sheets({ version: "v4", auth });
+  return sheets;
+}
+
+export const getSheetData = async (spreadsheetId: string, range: string) => {
+  const sheetsClient = initSheetsClient();
 
   try {
-    const response = await sheets.spreadsheets.values.get({
+    const response = await sheetsClient.spreadsheets.values.get({
       spreadsheetId,
       range,
     });
     return response.data.values || [];
   } catch (error) {
-    console.error("Error al acceder a Google Sheets:", error);
     return [];
   }
 };
