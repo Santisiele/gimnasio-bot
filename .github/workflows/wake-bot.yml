@@ -2,12 +2,13 @@ name: Wake Bot
 
 on:
   schedule:
-    - cron: '0 11 * * *'
+    - cron: '0 11 * * *'  # 08:00 Argentina (11:00 UTC)
   workflow_dispatch:
 
 jobs:
   wake:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout rama main
         uses: actions/checkout@v3
@@ -19,8 +20,7 @@ jobs:
           curl -fsSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
 
-      - name: Deploy rama main a Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Hacer deploy a Railway (rama main)
         run: |
-          railway up
+          export RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
+          railway up --service gimnasio-bot

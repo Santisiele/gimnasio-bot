@@ -2,12 +2,13 @@ name: Sleep Bot
 
 on:
   schedule:
-    - cron: '0 1 * * *' 
+    - cron: '0 1 * * *'  # 22:00 Argentina (01:00 UTC)
   workflow_dispatch:
 
 jobs:
   sleep:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout rama sleep
         uses: actions/checkout@v3
@@ -19,8 +20,7 @@ jobs:
           curl -fsSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
 
-      - name: Deploy rama sleep a Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Hacer deploy a Railway (rama sleep)
         run: |
-          railway up
+          export RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
+          railway up --service gimnasio-bot
