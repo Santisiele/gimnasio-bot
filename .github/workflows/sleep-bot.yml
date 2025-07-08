@@ -2,7 +2,7 @@ name: Sleep Bot
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # 22:00 Argentina / 01:00 UTC
+    - cron: '0 1 * * *'  # 22:00 Argentina (01:00 UTC)
   workflow_dispatch:
 
 jobs:
@@ -23,4 +23,4 @@ jobs:
       - name: Hacer deploy a Railway (rama sleep)
         run: |
           export RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
-          railway up
+          railway up --service gimnasio-bot
