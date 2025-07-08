@@ -1,9 +1,9 @@
 name: Sleep Bot
 
 on:
-  schedule:
-    - cron: '0 1 * * *' 
   workflow_dispatch:
+  schedule:
+    - cron: '0 1 * * *'  # 22:00 ARG
 
 jobs:
   sleep:
@@ -19,8 +19,7 @@ jobs:
           curl -fsSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH
 
-      - name: Deploy rama sleep a Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Autenticarse en Railway y hacer deploy
         run: |
+          railway login --token ${{ secrets.RAILWAY_TOKEN }}
           railway up
