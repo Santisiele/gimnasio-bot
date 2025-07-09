@@ -1,0 +1,13 @@
+name: test
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  test-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar fecha y hora
+        run: date
