@@ -1,12 +1,13 @@
 {
-    "name": "bot-dormido",
-    "version": "1.0.0",
-    "main": "src/index.ts",
-    "scripts": {
-        "start": "ts-node src/index.ts"
-    },
-    "devDependencies": {
-        "ts-node": "^10.0.0",
-        "typescript": "^4.0.0"
-    }
+  "name": "bot-dormido",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "ts-node": "^10.0.0",
+    "typescript": "^4.0.0"
+  }
 }
