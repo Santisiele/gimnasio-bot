@@ -16,9 +16,7 @@ jobs:
           ref: sleep
 
       - name: Instalar Railway CLI
-        run: |
-          curl -fsSL https://railway.app/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+        run: npm install -g @railway/cli
 
       - name: Hacer deploy a Railway (rama sleep)
         run: |

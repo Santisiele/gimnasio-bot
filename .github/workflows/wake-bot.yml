@@ -2,7 +2,7 @@ name: Wake Bot
 
 on:
   schedule:
-    - cron: '0 11 * * *'  # 08:00 Argentina (11:00 UTC)
+    - cron: '0 11 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -16,9 +16,7 @@ jobs:
           ref: main
 
       - name: Instalar Railway CLI
-        run: |
-          curl -fsSL https://railway.app/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+        run: npm install -g @railway/cli
 
       - name: Hacer deploy a Railway (rama main)
         run: |
